@@ -1,3 +1,4 @@
+require "pry"
 class ProjectsController < ApplicationController
    
     get "/projects" do 
@@ -10,7 +11,18 @@ class ProjectsController < ApplicationController
     end
 
     post "/projects" do
-        serialize(Project.create(project_params))
+        #serialize(Project.create(project_params))
+        car = Car.find_by(name: params[:search_car])
+        project = Project.create(
+            title: params[:title],
+            time_required: params[:time_required],
+            tools_required: params[:tools_required],
+            description: params[:description],
+            created_at: params[:created_at],
+            updated_at: params[:updated_at],
+            car: car
+        )
+        project.to_json(methods: [:car])
     end
 
     patch "/projects/:id" do
@@ -27,7 +39,7 @@ class ProjectsController < ApplicationController
     
     private
     def project_params
-        allowed_params = %w(title time_required tools_required description created_at updated_at)
+        allowed_params = %w(title time_required tools_required description created_at updated_at search_car)
         params.select {|param,value| allowed_params.include?(param)}
     end
 
