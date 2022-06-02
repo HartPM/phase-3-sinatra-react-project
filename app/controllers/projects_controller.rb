@@ -11,12 +11,6 @@ class ProjectsController < ApplicationController
     end
 
     post "/projects" do
-
-        car = Car.find_by(name: params[:name])
-        project = Project.create(project_params)
-
-        project.to_json(methods: [:name])
-
         #serialize(Project.create(project_params))
         car = Car.find_by(name: params[:search_car])
         project = Project.create(
@@ -46,13 +40,12 @@ class ProjectsController < ApplicationController
 
     private
     def project_params
-
-        allowed_params = %w(title time_required tools_required description)
-
         allowed_params = %w(title time_required tools_required description created_at updated_at search_car)
-
         params.select {|param,value| allowed_params.include?(param)}
     end
+
+
+
 
     def serialize(project)
         project.to_json
