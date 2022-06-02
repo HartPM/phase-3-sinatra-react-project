@@ -10,6 +10,7 @@ class ProjectsController < ApplicationController
         serialize(project)
     end
 
+
     post "/projects" do
         #serialize(Project.create(project_params))
         car = Car.find_by(name: params[:search_car])
@@ -39,7 +40,7 @@ class ProjectsController < ApplicationController
     
     private
     def project_params
-        allowed_params = %w(title time_required tools_required description created_at updated_at search_car)
+        allowed_params = %w(title time_required tools_required description created_at updated_at search_car car_id)
         params.select {|param,value| allowed_params.include?(param)}
     end
 
@@ -47,3 +48,4 @@ class ProjectsController < ApplicationController
         project.to_json
     end
 end
+
